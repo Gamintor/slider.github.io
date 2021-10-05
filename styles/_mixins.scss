@@ -1,0 +1,25 @@
+@mixin dimennsionAndPosition($position, $width, $height) {
+    position: $position;
+    width: $width;
+    height: $height;
+}
+
+@mixin slider {
+    display: flex;
+    flex-direction: row-reverse;
+    column-gap: 10px;
+    height: 100%;
+    img {
+        border-radius: 6px;
+    }
+}
+
+@mixin footAndHeadText {
+    font-family: Helvetica, sans-serif;
+    font-size: 15px;
+    line-height: 18px;
+    font-weight: 400;
+    display: flex;
+    align-items: flex-end;
+    color: #fff;
+}

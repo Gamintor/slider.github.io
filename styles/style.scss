@@ -1,0 +1,155 @@
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;600;700&display=swap');
+@import "./variables";
+@import "./mixins";
+
+*, *::after, *::before {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+.centeringDiv {
+    position: relative;
+}
+
+.mainDiv {
+    @include dimennsionAndPosition(absolute, 940px, 730px);
+    top: 50%;
+    left: 50%;
+    margin: 120px 0 0 -470px;
+}
+
+.header {
+    @include dimennsionAndPosition(absolute, 940px, 100px);
+    top: 0;
+    right: 0;
+    #boxLeft {
+        @include dimennsionAndPosition(absolute, 300px, 100px);
+        left: 0;
+        top: 0;
+        background-color: $lightGrey;
+        border-radius: 0 0 6px 6px;
+    }
+    #boxRight {
+        @extend #boxLeft;
+        width: 621px;
+        left: 320px;
+        p {
+            @include dimennsionAndPosition(absolute, 245x, 18px);
+            left: 80px;
+            top: 39px;
+            @include footAndHeadText();
+        }
+    }
+}
+
+.textDiv {
+    @include dimennsionAndPosition(absolute, 300px, 295px);
+    right: 0;
+    top: 160px;
+    font-family: 'Source Sans Pro', sans-serif;
+    font-style: normal;
+    #title {
+        @include dimennsionAndPosition(absolute, 300px, 120px);
+        left: 0;
+        top: 0;
+        font-weight: 700;
+        font-size: 32px;
+        letter-spacing: -0.2px;
+        line-height: 40px;
+        display: flex;
+        align-items: flex-end;
+        color: $navyBlue;
+    }
+    #text {
+        @include dimennsionAndPosition(absolute, 300px, 155px);
+        left: 0px;
+        top: 140px;
+        font-weight: 400;
+        font-size: 18px;
+        line-height: 26px;
+        display: flex;
+        align-items: center;
+        color: $darkGrey;
+    }
+}
+
+.arrows {
+    @include dimennsionAndPosition(absolute, 60px, 130px);
+    right: 320px;
+    bottom: 230px;
+}
+
+#buttonRight {
+    @include dimennsionAndPosition(absolute, 60px, 60px);
+    -webkit-appearance: none;
+    bottom: 0;
+    background-color: #fff;
+    cursor: pointer;
+    border: $presetBorder;
+    border-radius: 7px;
+    transition: border 0.3s, transform 0.1s;
+    img {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        margin: -8px 0 0 -5px;
+        transition: opacity 0.2s ease-in-out;
+    }
+    #bottom {
+        opacity: 0;
+    }
+    &:hover {
+        border: $hoverBorder;
+        #top {
+            opacity: 0;
+        }
+        #bottom {
+            opacity: 1;
+        }
+    }
+    &:active {
+        transform: matrix(-1, 0, 0, 1, 0, 0);
+    }
+}
+
+#buttonLeft {
+    @extend #buttonRight;
+    top: 0;
+    bottom: auto;
+}
+
+.bottomRow {
+    @include dimennsionAndPosition(absolute, 1080px, 200px);
+    right: 480px;
+    bottom: 160px;
+    overflow: hidden;
+    .bottomSlider {
+        @include slider();
+    }
+}
+
+.topRow {
+    @include dimennsionAndPosition(absolute, 1230px, 200px);
+    right: 320px;
+    top: 160px;
+    overflow: hidden;
+    .topSlider {
+        @include slider();
+    }
+}
+
+.footer {
+    @include dimennsionAndPosition(absolute, 940px, 100px);
+    bottom: 0;
+    right: 0;
+    background-color: $lightGrey;
+    border-radius: 5px 5px 0 0;
+    p {
+        @include dimennsionAndPosition(absolute, 240px, 18px);
+        left: 80px;
+        top: 42px;
+        @include footAndHeadText();
+    }
+}
+

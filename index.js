@@ -1,141 +1,113 @@
-const gornjeSlike = $(".gornjiSlider img");
-const donjeSlike = $(".donjiSlider img");
+const topRowImages = $(".topSlider img");
+const bottomRowImages = $(".bottomSlider img");
 
 // Razmak između slika, odnosno column-gap
-const razmak = 10;
+const pictureGap = 10;
 
-// Boolske varijable korištene za ograničavanje
-let tranzicijaTrajeGore = false;
-let tranzicijaTrajeDolje = false;
+// Boolske varijable korištene za ograničavanje izvođenja funkcije za pomak
+let transitionLastsTopRow = false;
+let transitionLastsBottomRow = false;
 
 // Vrijednost pomaka po x-osi u pikselima
-let gornjiPut = gornjeSlike[0].width + razmak;
-let donjiPut = donjeSlike[0].width + razmak;
+let topDistance = topRowImages[0].width + pictureGap;
+let bottomDistance = bottomRowImages[0].width + pictureGap;
 
-// Početni pomak gornjih slika u lijevo, zbog toga što želimo da red počne od prve slike a ne od klona zadnje slike
-$(".gornjiSlider").css("transform", `translateX(${gornjiPut}px)`);
+// Funkcija koja se poziva unutar document.ready callback funkcije
+const startingShift = () => {
+    // Početni pomak gornjih slika u desno, zbog toga što želimo da red počne od prve slike a ne od klona zadnje slike
+    $(".topSlider").css("transform", `translateX(${topDistance}px)`);
 
-function pomakGornjiRed(smjer) {
-    if (tranzicijaTrajeGore) return;
-    tranzicijaTrajeGore = true;
+    // Početni pomak donjih slika u desno
+    $(".bottomSlider").css("transform", `translateX(${bottomDistance}px)`);
+};
 
-    const trenutnaSlika = gornjeSlike.filter(".aktivnaSlika");
-    let sljedecaSlika, sirina;
+const shiftTopRow = direction => {
+    if (transitionLastsTopRow) return;
+    transitionLastsTopRow = true;
 
-    if (smjer == "lijevo") {
-        sljedecaSlika = trenutnaSlika.next();
-        sirina = trenutnaSlika[0].width;
-        gornjiPut += sirina + razmak;
+    const currentImage = topRowImages.filter(".activeImage");
+    let nextImage, imageWidth;
+
+    if (direction === "left") {
+        nextImage = currentImage.next();
+        imageWidth = currentImage[0].width;
+        topDistance += imageWidth + pictureGap;
     } else {
-        sljedecaSlika = trenutnaSlika.prev();
-        sirina = sljedecaSlika[0].width;
-        gornjiPut -= sirina + razmak;
+        nextImage = currentImage.prev();
+        imageWidth = nextImage[0].width;
+        topDistance -= imageWidth + pictureGap;
     }
 
     // Pomak po x-osi uz animaciju
-    $(".gornjiSlider").css({ transform: `translateX(${gornjiPut}px)`, transition: "transform 0.3s ease-in-out" });
+    $(".topSlider").css({ transform: `translateX(${topDistance}px)`, transition: "transform 0.3s ease-in-out" });
 
     // Event listener koji se aktivira kada je gotova CSS tranzicija te sukladno stanju varijable "sljedecaSlika" pomiče slider
-    $(".gornjiSlider").on("transitionend", function () {
-        if (sljedecaSlika.attr("id") == "kopijaPrve") {
+    $(".topSlider").on("transitionend", () => {
+        if (nextImage.attr("id") === "copyFirst") {
             // Vracamo se na pocetak reda, bez tranzicije
-            gornjiPut = gornjeSlike[0].width + razmak;
-            sljedecaSlika = gornjeSlike.eq(1);
-            $(this).css({ transform: `translateX(${gornjiPut}px)`, transition: "none" });
+            topDistance = topRowImages[0].width + pictureGap;
+            nextImage = topRowImages.eq(1);
+            $(".topSlider").css({ transform: `translateX(${topDistance}px)`, transition: "none" });
         }
-        if (sljedecaSlika.attr("id") == "kopijaZadnje") {
+        if (nextImage.attr("id") === "copyLast") {
             // Vracamo se na isti taj element predkraj reda, bez tranzicije
-            gornjiPut = 1010;
-            sljedecaSlika = gornjeSlike.eq(5);
-            $(this).css({ transform: `translateX(${gornjiPut}px)`, transition: "none" });
+            topDistance = 1830;
+            nextImage = topRowImages.eq(9);
+            $(".topSlider").css({ transform: `translateX(${topDistance}px)`, transition: "none" });
         }
         // Tek kada je CSS tranzicija gotova, postavljamo "tranzicijaTrajeGore" u stanje false
-        tranzicijaTrajeGore = false;
-        trenutnaSlika.removeClass("aktivnaSlika");
-        sljedecaSlika.addClass("aktivnaSlika");
+        transitionLastsTopRow = false;
+        currentImage.removeClass("activeImage");
+        nextImage.addClass("activeImage");
     });
-}
+};
 
-$(".donjiSlider").css("transform", `translateX(${donjiPut}px)`);
+const shiftBottomRow = direction => {
+    if (transitionLastsBottomRow) return;
+    transitionLastsBottomRow = true;
 
-function pomakDonjiRed(smjer) {
-    if (tranzicijaTrajeDolje) return;
-    tranzicijaTrajeDolje = true;
+    const currentImage = bottomRowImages.filter(".activeImage");
+    let nextImage, imageWidth;
 
-    const trenutnaSlika = donjeSlike.filter(".aktivnaSlika");
-    let sljedecaSlika, sirina;
-
-    if (smjer == "lijevo") {
-        sljedecaSlika = trenutnaSlika.next();
-        sirina = trenutnaSlika[0].width;
-        donjiPut += sirina + razmak;
+    if (direction === "left") {
+        nextImage = currentImage.next();
+        imageWidth = currentImage[0].width;
+        bottomDistance += imageWidth + pictureGap;
     } else {
-        sljedecaSlika = trenutnaSlika.prev();
-        sirina = sljedecaSlika[0].width;
-        donjiPut -= sirina + razmak;
+        nextImage = currentImage.prev();
+        imageWidth = nextImage[0].width;
+        bottomDistance -= imageWidth + pictureGap;
     }
 
-    $(".donjiSlider").css({ transform: `translateX(${donjiPut}px)`, transition: "transform 0.3s ease-in-out" });
+    $(".bottomSlider").css({ transform: `translateX(${bottomDistance}px)`, transition: "transform 0.3s ease-in-out" });
 
-    $(".donjiSlider").on("transitionend", function () {
-        if (sljedecaSlika.attr("id") == "kopijaPrve") {
-            donjiPut = donjeSlike[0].width + razmak;
-            sljedecaSlika = donjeSlike.eq(1);
-            $(this).css({ transform: `translateX(${donjiPut}px)`, transition: "none" });
+    $(".bottomSlider").on("transitionend", () => {
+        if (nextImage.attr("id") === "copyFirst") {
+            bottomDistance = bottomRowImages[0].width + pictureGap;
+            nextImage = bottomRowImages.eq(1);
+            $(".bottomSlider").css({ transform: `translateX(${bottomDistance}px)`, transition: "none" });
         }
-        if (sljedecaSlika.attr("id") == "kopijaZadnje") {
-            donjiPut = 820;
-            sljedecaSlika = donjeSlike.eq(4);
-            $(this).css({ transform: `translateX(${donjiPut}px)`, transition: "none" });
+        if (nextImage.attr("id") === "copyLast") {
+            bottomDistance = 1830;
+            nextImage = bottomRowImages.eq(9);
+            $(".bottomSlider").css({ transform: `translateX(${bottomDistance}px)`, transition: "none" });
         }
-        trenutnaSlika.removeClass("aktivnaSlika");
-        sljedecaSlika.addClass("aktivnaSlika");
-        tranzicijaTrajeDolje = false;
+        transitionLastsBottomRow = false;
+        currentImage.removeClass("activeImage");
+        nextImage.addClass("activeImage");
     });
-}
+};
 
-$("#tipkaLijevo").click(() => {
-    pomakGornjiRed("lijevo");
-    pomakDonjiRed("lijevo");
+// Kada je DOM učitan, napravi početni pomak oba slidera sa nulte na prvu sliku, te dodaj event handlere za button
+$(document).ready(() => {
+    startingShift();
+
+    $("#buttonLeft").on("click", () => {
+        shiftTopRow("left");
+        shiftBottomRow("left");
+    });
+    $("#buttonRight").on("click", () => {
+        shiftTopRow("right");
+        shiftBottomRow("right");
+    });
 });
-$("#tipkaDesno").click(() => {
-    pomakGornjiRed("desno");
-    pomakDonjiRed("desno");
-});
-
-// Stajling tipki za pomak
-$("#tipkaDesno")
-    .hover(
-        function () {
-            $(this).css("border", "2px solid #134880");
-            $(this).children("img").attr("src", "./Assets/arrow-blue-right.png");
-        },
-        function () {
-            $(this).css("border", "3px solid #DDDDDD");
-            $(this).children("img").attr("src", "./Assets/arrow-gray-right.png");
-        }
-    )
-    .mousedown(function () {
-        $(this).css({ backgroundColor: "#b3b3b3", transform: "scale(0.90)" });
-    })
-    .mouseup(function () {
-        $(this).css({ backgroundColor: "#fff", transform: "scale(1)" });
-    });
-
-$("#tipkaLijevo")
-    .hover(
-        function () {
-            $(this).css("border", "2px solid #134880");
-            $(this).children("img").attr("src", "./Assets/arrow-blue-left.png");
-        },
-        function () {
-            $(this).css("border", "3px solid #DDDDDD");
-            $(this).children("img").attr("src", "./Assets/arrow-gray-left.png");
-        }
-    )
-    .mousedown(function () {
-        $(this).css({ backgroundColor: "#b3b3b3", transform: "scale(0.90)" });
-    })
-    .mouseup(function () {
-        $(this).css({ backgroundColor: "#fff", transform: "scale(1)" });
-    });
