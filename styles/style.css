@@ -42,25 +42,6 @@
   left: 320px;
 }
 
-.header #boxRight p {
-  position: absolute;
-  width: 245x;
-  height: 18px;
-  left: 80px;
-  top: 39px;
-  font-family: Helvetica, sans-serif;
-  font-size: 15px;
-  line-height: 18px;
-  font-weight: 400;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-align: end;
-      -ms-flex-align: end;
-          align-items: flex-end;
-  color: #fff;
-}
-
 .textDiv {
   position: absolute;
   width: 300px;
@@ -158,8 +139,8 @@
 }
 
 #buttonRight:active, #buttonLeft:active {
-  -webkit-transform: matrix(-1, 0, 0, 1, 0, 0);
-          transform: matrix(-1, 0, 0, 1, 0, 0);
+  -webkit-transform: scale(0.95);
+          transform: scale(0.95);
 }
 
 #buttonLeft {
@@ -227,24 +208,5 @@
   right: 0;
   background-color: #DDDDDD;
   border-radius: 5px 5px 0 0;
-}
-
-.footer p {
-  position: absolute;
-  width: 240px;
-  height: 18px;
-  left: 80px;
-  top: 42px;
-  font-family: Helvetica, sans-serif;
-  font-size: 15px;
-  line-height: 18px;
-  font-weight: 400;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-align: end;
-      -ms-flex-align: end;
-          align-items: flex-end;
-  color: #fff;
 }
 /*# sourceMappingURL=style.css.map */

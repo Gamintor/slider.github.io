@@ -1,23 +1,23 @@
 const topRowImages = $(".topSlider img");
 const bottomRowImages = $(".bottomSlider img");
 
-// Razmak između slika, odnosno column-gap
+// Space between pictures, column-gap
 const pictureGap = 10;
 
-// Boolske varijable korištene za ograničavanje izvođenja funkcije za pomak
+// Boolean variables used for limiting the execution of shift functions
 let transitionLastsTopRow = false;
 let transitionLastsBottomRow = false;
 
-// Vrijednost pomaka po x-osi u pikselima
+// Value of x-axis distance by which the images move
 let topDistance = topRowImages[0].width + pictureGap;
 let bottomDistance = bottomRowImages[0].width + pictureGap;
 
-// Funkcija koja se poziva unutar document.ready callback funkcije
+// Function that is called inside document.ready callback function
 const startingShift = () => {
-    // Početni pomak gornjih slika u desno, zbog toga što želimo da red počne od prve slike a ne od klona zadnje slike
+    // Starting shift of the top row because we want it to start from the 1st image
     $(".topSlider").css("transform", `translateX(${topDistance}px)`);
 
-    // Početni pomak donjih slika u desno
+    // Starting shift of the bottom row
     $(".bottomSlider").css("transform", `translateX(${bottomDistance}px)`);
 };
 
@@ -38,24 +38,24 @@ const shiftTopRow = direction => {
         topDistance -= imageWidth + pictureGap;
     }
 
-    // Pomak po x-osi uz animaciju
+    // x-axis shift of the top slider, with animation
     $(".topSlider").css({ transform: `translateX(${topDistance}px)`, transition: "transform 0.3s ease-in-out" });
 
-    // Event listener koji se aktivira kada je gotova CSS tranzicija te sukladno stanju varijable "sljedecaSlika" pomiče slider
+    // Event listener which is activated when a CSS transition is over, and moves the slider according to a value of "nextImage" variable
     $(".topSlider").on("transitionend", () => {
         if (nextImage.attr("id") === "copyFirst") {
-            // Vracamo se na pocetak reda, bez tranzicije
+            // Going back to the start of the row, without transition
             topDistance = topRowImages[0].width + pictureGap;
             nextImage = topRowImages.eq(1);
             $(".topSlider").css({ transform: `translateX(${topDistance}px)`, transition: "none" });
         }
         if (nextImage.attr("id") === "copyLast") {
-            // Vracamo se na isti taj element predkraj reda, bez tranzicije
+            // Going back to that image near the end of the row, without transition
             topDistance = 1830;
             nextImage = topRowImages.eq(9);
             $(".topSlider").css({ transform: `translateX(${topDistance}px)`, transition: "none" });
         }
-        // Tek kada je CSS tranzicija gotova, postavljamo "tranzicijaTrajeGore" u stanje false
+        // Only when the CSS transition is over, "transitionLastsTopRow" is set to false
         transitionLastsTopRow = false;
         currentImage.removeClass("activeImage");
         nextImage.addClass("activeImage");
@@ -98,7 +98,7 @@ const shiftBottomRow = direction => {
     });
 };
 
-// Kada je DOM učitan, napravi početni pomak oba slidera sa nulte na prvu sliku, te dodaj event handlere za button
+// When DOM is loaded make a starting shift of both sliders to show first picture, and add event handler for button
 $(document).ready(() => {
     startingShift();
 

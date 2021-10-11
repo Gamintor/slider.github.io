@@ -34,12 +34,6 @@
         @extend #boxLeft;
         width: 621px;
         left: 320px;
-        p {
-            @include dimennsionAndPosition(absolute, 245x, 18px);
-            left: 80px;
-            top: 39px;
-            @include footAndHeadText();
-        }
     }
 }
 
@@ -109,7 +103,7 @@
         }
     }
     &:active {
-        transform: matrix(-1, 0, 0, 1, 0, 0);
+        transform: scale(0.95);
     }
 }
 
@@ -145,11 +139,5 @@
     right: 0;
     background-color: $lightGrey;
     border-radius: 5px 5px 0 0;
-    p {
-        @include dimennsionAndPosition(absolute, 240px, 18px);
-        left: 80px;
-        top: 42px;
-        @include footAndHeadText();
-    }
 }
 
